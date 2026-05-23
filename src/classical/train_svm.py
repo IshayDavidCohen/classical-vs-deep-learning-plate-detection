@@ -10,7 +10,11 @@ This script demonstrates the full training workflow:
 6. Generate an automatic report with confusion matrix and metrics
 
 Run:
-    python -m src.classical.train_svm
+PYTHONPATH=. python3 -m src.classical.train_svm \
+    --data-dir G:/coding/repos/classical-vs-deep-learning-plate-detection/data/features \
+    --model-path models/svm_plate.joblib \
+    --output-dir ../../outputs \
+    --grid-search
 
 Expects your teammate to have saved features like:
     data/features/X_train.npy   — shape (n_samples, n_features)

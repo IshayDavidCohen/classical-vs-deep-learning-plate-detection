@@ -159,7 +159,7 @@ def main():
 
     # ---- Validate on test set ----
     print("\nRunning validation on test set...")
-    best_model = YOLO(str(model_dest))
+    best_model = YOLO(str(best_model_src), task="detect")
     val_results = best_model.val(data=train_args["data"], split="test")
 
     metrics = {}
