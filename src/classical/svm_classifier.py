@@ -65,8 +65,9 @@ class PlateClassification:
         if param_grid is None:
             param_grid = {
                 "svm__C": [0.1, 1, 10],
-                "svm__kernel": ["linear", "rbf"],
-                "svm__gamma": ["scale", "auto"],
+                # "svm__kernel": ["linear", "rbf"],
+                "svm__kernel": ["linear"]
+                # "svm__gamma": ["scale", "auto"],
             }
 
         gs = GridSearchCV(
@@ -74,8 +75,8 @@ class PlateClassification:
             param_grid=param_grid,
             cv=cv,
             scoring=scoring,
-            n_jobs=1,
-            verbose=1,
+            n_jobs=-1,
+            verbose=3,
         )
         gs.fit(X, y)
         self.pipeline = gs.best_estimator_
