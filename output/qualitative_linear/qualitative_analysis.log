@@ -1,0 +1,19 @@
+C:\Users\Ishay\miniconda3\python.exe C:/Users/Ishay/AppData/Local/Programs/PyCharm/plugins/python-ce/helpers/pydev/pydevd.py --multiprocess --qt-support=auto --client 127.0.0.1 --port 57870 --file G:\coding\repos\classical-vs-deep-learning-plate-detection\src\evaluation\qualitative_analysis.py --images-dir ../../data/raw/test/images --labels-dir ../../data/raw/test/labels --model-path ../classical/models/svm_plate.joblib --output-dir ../../output/qualitative
+Connected to: <socket.socket fd=908, family=2, type=1, proto=0, laddr=('127.0.0.1', 57871), raddr=('127.0.0.1', 57870)>.
+Connected to pydev debugger (build 253.28294.336)
+Loading model ...
+Running classifier on crops from ../../data/raw/test/images ...
+
+Results on 620 crops:
+  True Positives:  206
+  False Negatives: 16
+  False Positives: 2
+  True Negatives:  396
+
+Generating visualizations ...
+  Saved: ..\..\output\qualitative\true_positives_low_confidence.png
+  Saved: ..\..\output\qualitative\false_negatives.png
+  Saved: ..\..\output\qualitative\false_positives.png
+
+Report saved to: ..\..\output\qualitative\qualitative_report.md
+Done!
