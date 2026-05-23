@@ -3,3 +3,7 @@ numpy==2.4.6
 scikit-learn
 scikit-image
 opencv-python
+matplotlib
+ultralytics
+torch
+torchvision
