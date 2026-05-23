@@ -8,38 +8,13 @@ compares predictions to ground-truth labels, and visualizes:
   - False Positives (spurious detections with no matching GT)
 
 Saves annotated image grids to the output directory for the report.
-
-Usage:
-    python -m src.evaluation.qualitative_analysis_yolo \
-        --images-dir data/raw/test/images \
-        --labels-dir data/raw/test/labels \
-        --model-path models/yolo_plate.pt \
-        --output-dir outputs/qualitative_yolo
 """
 
-import os
-import random
-import argparse
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-from pathlib import Path
-from ultralytics import YOLO
 
-from src.common.utils import parse_yolo_label
-
-
-def compute_iou_xyxy(box_a, box_b) -> float:
-    """IoU between two (x1, y1, x2, y2) boxes."""
-    ix1 = max(box_a[0], box_b[0])
-    iy1 = max(box_a[1], box_b[1])
-    ix2 = min(box_a[2], box_b[2])
-    iy2 = min(box_a[3], box_b[3])
-    inter = max(0, ix2 - ix1) * max(0, iy2 - iy1)
-    area_a = (box_a[2] - box_a[0]) * (box_a[3] - box_a[1])
-    area_b = (box_b[2] - box_b[0]) * (box_b[3] - box_b[1])
-    union = area_a + area_b - inter
-    return inter / union if union > 0 else 0.0
+from src.common.utils import iou_xyxy
 
 
 def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
@@ -70,7 +45,7 @@ def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
         for i, gt in enumerate(gt_boxes):
             if i in matched_gt:
                 continue
-            iou = compute_iou_xyxy(pred[:4], gt)
+            iou = iou_xyxy(pred[:4], gt)
             if iou > best_iou:
                 best_iou = iou
                 best_gt_idx = i
@@ -83,26 +58,6 @@ def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
 
     fn_boxes = [gt for i, gt in enumerate(gt_boxes) if i not in matched_gt]
     return tp_pairs, fp_boxes, fn_boxes
-
-
-# def draw_boxes_on_image(img, gt_boxes=None, pred_boxes=None, title=""):
-#     """
-#     Draw GT (green) and predicted (red) boxes on an image.
-#     Returns the annotated image in RGB.
-#     """
-#     vis = img.copy()
-#     if gt_boxes:
-#         for box in gt_boxes:
-#             x1, y1, x2, y2 = [int(v) for v in box[:4]]
-#             cv2.rectangle(vis, (x1, y1), (x2, y2), (0, 255, 0), 2)
-#     if pred_boxes:
-#         for box in pred_boxes:
-#             x1, y1, x2, y2 = [int(v) for v in box[:4]]
-#             conf = box[4] if len(box) > 4 else 0
-#             cv2.rectangle(vis, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#             cv2.putText(vis, f"{conf:.2f}", (x1, y1 - 5),
-#                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-#     return cv2.cvtColor(vis, cv2.COLOR_BGR2RGB)
 
 def draw_boxes_on_image(img, tp_gt_boxes=None, fn_boxes=None, fp_boxes=None, tp_pred_boxes=None):
     """

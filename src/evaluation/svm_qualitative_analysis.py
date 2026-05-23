@@ -1,40 +1,23 @@
 """
-Qualitative analysis of SVM classifier on image crops
-This acts as our evaluation file for the results of our .joblib model
+Qualitative analysis of SVM classifier on image crops.
 
-We will load the trained SVM mode, extract plate + background crops the dataset.
-split, classify them, and will visualize:
-    - True Positives (TP): correctly classified plate crop
-    - False Positives (FP): background crop incorrectly classified as plate
-    - True Negatives (TN): correctly classified background crop
-Obviously it wont have any FN since we are only evaluating plates.
+Provides functions to evaluate a trained SVM model by classifying
+plate and background crops from test images, then generating
+visual grids of true positives, false negatives, and false positives.
 
-It saves visual grids to the output directory for use in the report.md
-
-Usage:
-    python -m src.evaluation.svm_qualitative_analysis \
-        --images-dir data/raw/test/images \
-        --labels-dir data/raw/test/labels \
-        --model-path models/svm_plate.joblib \
-        --output-dir outputs/qualitative
-
+Functions are called from main.py — this module has no CLI entry point.
 """
 
 import os
 import cv2
 import random
-import argparse
 import numpy as np
 import matplotlib.pylab as plt
 
-from pathlib import Path
-
-from src.classical.hog_features import HOGFeatureExtractor
-from src.classical.svm_classifier import PlateClassification
 from src.common.utils import parse_yolo_label, sample_negative_crops
 
 
-def collect_predictions(images_dir, labels_dir, clf, extractor, max_images=200, neg_per_image=2, seed=42):
+def collect_predictions(images_dir, labels_dir, clf, extractor, max_images=200, neg_per_image=5, seed=42):
     """
     Run the classifier on plate crops + background crops from images.
 
@@ -84,7 +67,8 @@ def collect_predictions(images_dir, labels_dir, clf, extractor, max_images=200, 
                     "img_name": img_name,
                     "box": box,
                 })
-            except Exception:
+            except Exception as e:
+                print(f"  Skipping crop in {img_name}: {e}")
                 continue
 
         # Negative crops
@@ -105,7 +89,8 @@ def collect_predictions(images_dir, labels_dir, clf, extractor, max_images=200, 
                     "img_name": img_name,
                     "box": neg_box,
                 })
-            except Exception:
+            except Exception as e:
+                print(f"  Skipping crop in {img_name}: {e}")
                 continue
 
     return results

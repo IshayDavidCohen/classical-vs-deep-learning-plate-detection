@@ -8,10 +8,8 @@ can be compared under identical conditions.
 Expects a data.yaml file in YOLO format pointing to train/val/test splits.
 """
 
-import argparse
 from pathlib import Path
 from datetime import datetime
-from ultralytics import YOLO
 from dataclasses import dataclass
 
 @dataclass

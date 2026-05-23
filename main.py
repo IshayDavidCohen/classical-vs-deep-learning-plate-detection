@@ -183,13 +183,17 @@ def train_yolo(yolo_config: YoloTrainConfig):
     results = model.train(**train_args)
     training_time = time.time() - start
 
-    best_model_src = Path(results.save_dir) / "weights" / "best.pt"
+    best_model_src = Path(f"{results.save_dir}/weights/best.pt")
+    if not best_model_src.exists():
+        best_model_src = Path(f"{results.save_dir}/weights/last.pt")
+    if not best_model_src.exists():
+        print(f"\nError: No model weights found at {results.save_dir}/weights/")
+        return
+
     model_dest = Path(Config.YOLO_MODEL)
     model_dest.parent.mkdir(parents=True, exist_ok=True)
-
-    if best_model_src.exists():
-        shutil.copy2(best_model_src, model_dest)
-        print(f"\nBest model copied to: {model_dest}")
+    shutil.copy2(best_model_src, model_dest)
+    print(f"\nBest model copied to: {model_dest}")
 
     print("\nRunning validation on test set...")
     best_model = YOLO(str(best_model_src), task="detect")
@@ -232,7 +236,7 @@ def eval_svm(model_path: str, output_dir: str, label: str):
     print(f"Running classifier on crops from {Config.TEST_IMAGES} ...")
     results = collect_predictions(
         Config.TEST_IMAGES, Config.TEST_LABELS, clf, extractor,
-        max_images=Config.MAX_EVAL_IMAGES, seed=Config.SEED,
+        max_images=Config.MAX_EVAL_IMAGES, neg_per_image=Config.NEG_PER_IMAGE, seed=Config.SEED,
     )
 
     tp = [r for r in results if r["label"] == 1 and r["pred"] == 1]
@@ -482,7 +486,8 @@ def eval_yolo():
         "",
         "## Visualizations",
         "",
-        "In all images below: **green boxes** = ground truth, **red boxes** = YOLO predictions.",
+        "In all images below: **green** = GT matched, **blue** = prediction matched, "
+        "**yellow** = GT missed (false negative), **red** = false detection (false positive).",
         "",
         "### True Positives (lowest confidence)",
         "These are plates YOLO detected correctly, but with the lowest confidence scores.",
