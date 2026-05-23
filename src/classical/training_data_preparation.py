@@ -127,33 +127,3 @@ def prepare_dataset(
     print(f"  Skipped images       : {skipped}")
     print(f"  Feature shape        : {X.shape}")
     print(f"  Saved to: {output_dir}/X_train.npy, y_train.npy")
-
-
-# ------------------------------------------------------------------
-# CLI entry point
-# ------------------------------------------------------------------
-
-def main():
-    parser = argparse.ArgumentParser(description="Prepare HOG features for SVM training")
-    parser.add_argument("--images-dir", type=str, required=True,
-                        help="Path to image directory (e.g. data/raw/train/images)",)
-    parser.add_argument("--labels-dir", type=str, required=True,
-                        help="Path to YOLO label directory (e.g. data/raw/train/labels)")
-    parser.add_argument("--output-dir", type=str, default="data/features",
-                        help="Where to save X_train.npy and y_train.npy")
-    parser.add_argument("--neg-per-image", type=int, default=5,
-                        help="Number of negative crops per image (default: 5)")
-    parser.add_argument("--seed", type=int, default=42)
-    args = parser.parse_args()
-
-    prepare_dataset(
-        images_dir=args.images_dir,
-        labels_dir=args.labels_dir,
-        output_dir=args.output_dir,
-        neg_per_image=args.neg_per_image,
-        seed=args.seed,
-    )
-
-
-if __name__ == "__main__":
-    main()

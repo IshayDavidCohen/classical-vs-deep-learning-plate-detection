@@ -207,7 +207,7 @@ project/
 │   ├── deep/              # YOLO training and inference
 │   └── evaluation/
 │       ├── metrics.py                   # Classification + detection metrics
-│       └── qualitative_analysis.py      # Visual analysis of predictions
+│       └── svm_qualitative_analysis.py      # Visual analysis of predictions
 └── outputs/               # plots, analysis results
 ```
 
