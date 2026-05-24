@@ -2,6 +2,77 @@
 
 > Classical (HOG + SVM) vs Deep Learning (YOLOv8n) for License Plate Detection
 
+
+***Histogram of Oriented Gradients (HOG):*** A computer vision feature descriptor used to recognize shapes and objects in images. It breaks an image down into small connected regions called cells. For the pixels within each cell, it calculates the direction and intensity of the sharpest changes in brightness (the gradients) to map out the object's structural appearance. The algorithm then outputs this shape information as a structured feature vector (array).
+
+***Support Vector Machine (SVM):*** A machine learning algorithm used to classify data into distinct categories. It works by finding the optimal boundary line (or hyperplane) that separates different data groups. In our case, it uses the feature vector array that HOG outputs to detect the license plate.
+
+***You Only Look Once (YOLO):*** A real-time object detection algorithm (neural network) that identifies and locates multiple objects in an image in a single pass. It works by dividing the image into a grid and simultaneously predicting bounding boxes and category probabilities for each section.
+
+![HOG Feeature Map Example](./images/HOG_feature_map_example.png)
+
+---
+
+# Background and Terminology
+
+## Feature Extraction & Classical ML:
+
+***Kernel (Linear vs. RBF):*** The mathematical function used by an SVM to map data into a format where it can be easily separated. A Linear kernel searches for a straight-line boundary in the original space, while an RBF (Radial Basis Function) kernel maps data into higher dimensions to handle highly complex, non-linear patterns.
+
+![Linear vs RBF kernel](./GIF/SVM_Linear_vs_RBF_24_fps.gif)
+
+***C (Regularization Parameter):*** A hyperparameter that controls the balance between achieving a clean, smooth decision boundary and classifying every training point correctly. A small C value prioritizes a broader boundary that tolerates minor mistakes, while a large C forces the model to classify training points as perfectly as possible.
+
+***Gamma:*** A hyperparameter for non-linear SVM kernels (like RBF) that determines how far a single training point's influence reaches. A low gamma means points far away are considered, creating a smooth boundary, while a high gamma only considers points close to the boundary, creating a tightly fitted, complex line.
+
+***StandardScaler:*** A preprocessing tool that normalizes features to have a mean of $0$ and a variance of $1$. In our case, it scales the extracted HOG feature arrays right before they reach the SVM classifier to prevent features with larger numerical ranges from dominating the model's decision-making.
+
+***Grid Search / Cross-Validation:*** A tuning methodology that tests a grid of different hyperparameter combinations across multiple splits of the data to find the optimal configuration. In our project, we used 3-fold cross-validation, dividing the data into 3 parts (folds), where each iteration 2 parts were used for training and 1 part was used for validation. This process evaluated combinations of $C = [0.1, 1, 10]$, kernel types (linear vs. RBF), and gamma values (scale vs. auto) to guarantee that our final SVM settings generalize perfectly to unseen images. 
+
+***Sliding Window:*** A technique that scans an image by moving a small cropping window across it step-by-step to check for target objects at multiple locations and scales. In classical pipelines, it is used to sweep across an image to find the exact region containing a license plate.
+
+***Non-Maximum Suppression (NMS):*** A post-processing technique used to eliminate redundant, overlapping bounding boxes that predict the same object. It keeps only the bounding box with the highest confidence score and suppresses the rest, ensuring each license plate is detected exactly once.
+
+## Deep Learning & Detection
+
+***YOLOv8n (You Only Look Once - Nano):*** The smallest, fastest version of the YOLOv8 deep learning network optimized for real-time object detection with minimal computational overhead. It detects license plates in a fraction of a second by processing the entire image through a single unified neural network pass.
+
+***Fine-Tuning / Pretrained Weights:*** The process of taking a neural network that has already learned general shapes and features from a massive dataset and training it a bit further on a specific task. We use fine-tuning to quickly adapt a general-purpose model into a specialized license plate detector.
+
+***COCO Weights:*** The pre-calculated internal parameters learned by a model trained on the Common Objects in Context (COCO) dataset of 80 everyday categories. They provide an advanced foundation of visual intelligence, allowing our model to learn license plate characteristics much faster than starting from scratch.
+
+***Epoch / Batch Size:*** An epoch represents one complete pass of the entire training dataset through the neural network, while the batch size is the number of image samples processed simultaneously before the model updates its internal weights. Balancing these two settings determines how fast and stably the model converges on accurate detections.
+
+***End-to-End Learning:*** A deep learning paradigm where a single neural network takes raw images as input and directly outputs the final bounding boxes and classifications. Unlike traditional pipelines, it skips manual, multi-stage steps like standalone feature extraction and hands everything over to a single optimization process.
+
+## Evaluation Metrics
+
+***Precision / Recall / F1-Score:*** Evaluation metrics where - 
+Precision measures the percentage of predicted detections that were actually correct,
+Recall measures the percentage of real objects the model managed to find,
+and the F1-Score combines both into a single balanced accuracy rating.
+
+***Confusion Matrix (TP, FP, FN, TN):*** A tabular performance layout that tracks True Positives, False Positives, False Negatives, and True Negatives to show exactly where a model is succeeding or failing. It reveals whether the system is correctly identifying license plates or accidentally confusing background noise with text.
+
+***Intersection over Union (IoU):*** IoU measures how well a predicted box overlaps with the ground truth. An IoU of 0.5+ is typically considered a correct detection. It calculates this by dividing the area where the two boxes overlap by their total combined area to yield a precision score between 0 and 1.$$\text{IoU} = \frac{\text{Area of Intersection}}{\text{Area of Union}}$$
+
+![IoU_example](./GIF/IoU_example.gif)
+
+***mAP50 / mAP50-95 (Mean Average Precision):*** The primary benchmark metrics used to judge object detection models by calculating accuracy across multiple overlapping thresholds. mAP50 scores the model using a loose 50% overlap requirement, while mAP50-95 averages the scores across stricter thresholds to rigorously evaluate bounding box positioning.
+
+![mAP50-95](./images/mAP50-95.png)
+
+## Data & Methodology
+
+***Bounding Box:*** A set of rectangular spatial coordinates $(x, y, \text{width}, \text{height})$ used to frame and highlight the exact location of an object inside an image. In this project, it represents the drawn rectangle surrounding a localized license plate.
+
+***Ground Truth:*** The verified, real-world data manually labeled by humans to serve as the absolute correct answer key for training and evaluation. It acts as the gold standard against which the model's experimental bounding box predictions are judged.
+
+***Principal Component Analysis (PCA):*** A dimensionality reduction technique that simplifies highly complex data by transforming large feature spaces into fewer, highly informative components. It is used to compress massive HOG feature vectors into a smaller size to accelerate SVM training times without losing vital shape information.
+
+***Positive / Negative Samples:*** The structured dataset categories where positive samples contain cropped images of the target object (actual license plates) to teach the model what to look for, and negative samples contain background images without plates to teach the model what to ignore. In our project, negative samples were generated from the same source images by cropping random regions where the license plate was absent, ensuring their Intersection over Union ($\text{IoU}$) with the true license plate was less than $0.1$.
+
+
 ---
 
 ## 1. Training Overview
