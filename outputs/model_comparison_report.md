@@ -196,6 +196,10 @@ The RBF kernel reduced false positives from 77 to 17 and false negatives from 58
 | mAP50 | 0.976 | 0.974 |
 | mAP50-95 | 0.717 | 0.724 |
 
+![YOLO Confusion Matrix](../legacy_output/yolo/confusion_matrix.png)
+
+ Important to note, that because YOLO is a full image detector, the TN cell will be empty. YOLO either detects a plate or stays silent. It doesn't explicitly classify regions as background, so there's no count of correctly rejected background. The confusion matrix reflects this by showing only TP, FP, and FN.
+
 ---
 
 ## 3. Evaluation 1: Crop Classification (Apples-to-Apples)
