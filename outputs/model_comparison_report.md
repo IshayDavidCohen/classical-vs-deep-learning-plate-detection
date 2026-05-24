@@ -9,7 +9,7 @@
 
 ***You Only Look Once (YOLO):*** A real-time object detection algorithm (neural network) that identifies and locates multiple objects in an image in a single pass. It works by dividing the image into a grid and simultaneously predicting bounding boxes and category probabilities for each section.
 
-![HOG Feeature Map Example](./images/HOG_feature_map_example.png)
+![HOG Feature Map Example](./images/HOG_feature_map_example.png)
 
 ---
 
@@ -22,6 +22,47 @@
 ![Linear vs RBF kernel](./GIF/SVM_Linear_vs_RBF_24_fps.gif)
 
 ***C (Regularization Parameter):*** A hyperparameter that controls the balance between achieving a clean, smooth decision boundary and classifying every training point correctly. A small C value prioritizes a broader boundary that tolerates minor mistakes, while a large C forces the model to classify training points as perfectly as possible.
+
+Our training log output can demonstrate how the grid search converges on the optimal configuration:
+Notice how all linear kernel combinations plateau at F1 ≈ 0.954 regardless of C, while RBF configurations climb to 0.984
+```
+Loading features from data/features ...
+No validation set found - splitting 20% from training data.
+Train: 34093 samples, 3780 features
+Val:   8524 samples
+Class balance (train): 17.26% positive
+
+Running grid search ...
+Fitting 3 folds for each of 12 candidates, totalling 36 fits
+[CV 1/3] END svm__C=0.1, svm__gamma=auto, svm__kernel=linear;, score=0.954 total time=44.5min
+[CV 1/3] END svm__C=1, svm__gamma=scale, svm__kernel=linear;, score=0.954 total time=45.0min
+[CV 1/3] END svm__C=0.1, svm__gamma=scale, svm__kernel=linear;, score=0.954 total time=46.0min
+[CV 2/3] END svm__C=0.1, svm__gamma=auto, svm__kernel=linear;, score=0.960 total time=47.0min
+...
+...
+[CV 3/3] END svm__C=10, svm__gamma=scale, svm__kernel=rbf;, score=0.982 total time=73.6min
+[CV 1/3] END svm__C=10, svm__gamma=auto, svm__kernel=rbf;, score=0.983 total time=43.1min
+[CV 2/3] END svm__C=10, svm__gamma=auto, svm__kernel=rbf;, score=0.986 total time=39.9min
+[CV 3/3] END svm__C=10, svm__gamma=auto, svm__kernel=rbf;, score=0.982 total time=39.4min
+Best params: {'svm__C': 10, 'svm__gamma': 'scale', 'svm__kernel': 'rbf'}
+Best CV F1:  0.9836
+
+--- Validation results ---
+              precision    recall  f1-score   support
+
+  background       0.99      1.00      1.00      7052
+       plate       0.99      0.98      0.98      1472
+
+    accuracy                           0.99      8524
+   macro avg       0.99      0.99      0.99      8524
+weighted avg       0.99      0.99      0.99      8524
+
+
+Model saved to models/svm_plate.joblib
+```
+
+![Linear vs RBF kernel](./GIF/SVM_C_example.gif)
+
 
 ***Gamma:*** A hyperparameter for non-linear SVM kernels (like RBF) that determines how far a single training point's influence reaches. A low gamma means points far away are considered, creating a smooth boundary, while a high gamma only considers points close to the boundary, creating a tightly fitted, complex line.
 
