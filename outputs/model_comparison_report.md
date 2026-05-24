@@ -1,4 +1,4 @@
-# Model Comparison Report
+# A Comparative Study of Classical and Deep Learning Approaches for License Plate Detection
 
 > Classical (HOG + SVM) vs Deep Learning (YOLOv8n) for License Plate Detection
 
