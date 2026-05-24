@@ -151,7 +151,7 @@ class SVMComparison3D(ThreeDScene):
         )
 
         self.begin_ambient_camera_rotation(rate=0.15)
-        self.wait(3)
+        self.wait(1.5)
 
         # ---- Fit SVMs (happens during rotation wait) ----
         linear_svm = fit_2d_svm_on_3d(X_3d, y, kernel="linear", C=0.1)
@@ -190,7 +190,7 @@ class SVMComparison3D(ThreeDScene):
         )
 
         self.play(Create(linear_surface), run_time=2)
-        self.wait(3)
+        self.wait(1.5)
 
         # ---- RBF boundary (surface) ----
         rbf_label = Text("RBF Kernel (C=10, γ=scale)", font_size=24, color=YELLOW)
@@ -219,7 +219,7 @@ class SVMComparison3D(ThreeDScene):
             LaggedStart(*[FadeIn(d) for d in rbf_dots], lag_ratio=0.002),
             run_time=2,
         )
-        self.wait(3)
+        self.wait(1.5)
 
         # ---- Show both ----
         both_label = Text("Linear vs RBF", font_size=24, color=WHITE)
@@ -244,7 +244,7 @@ class SVMComparison3D(ThreeDScene):
             stroke_color=GREEN, stroke_width=1, stroke_opacity=0.4,
         )
         self.play(Create(linear_surface_2), run_time=1.5)
-        self.wait(2)
+        self.wait(1)
 
         # ---- Final insight ----
         insight = VGroup(
@@ -258,7 +258,7 @@ class SVMComparison3D(ThreeDScene):
         self.add_fixed_in_frame_mobjects(bg_rect)
 
         self.play(FadeIn(bg_rect), Write(insight), run_time=2)
-        self.wait(5)
+        self.wait(2)
 
         self.stop_ambient_camera_rotation()
         self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=1.5)
