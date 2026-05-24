@@ -2,7 +2,7 @@ C:\Users\Ishay\miniconda3\python.exe C:/Users/Ishay/AppData/Local/Programs/PyCha
 Connected to: <socket.socket fd=944, family=2, type=1, proto=0, laddr=('127.0.0.1', 57616), raddr=('127.0.0.1', 57615)>.
 Connected to pydev debugger (build 253.28294.336)
 Loading features from G:/coding/repos/classical-vs-deep-learning-plate-detection/data/features ...
-No validation set found — splitting 20% from training data.
+No validation set found - splitting 20% from training data.
 Train: 34093 samples, 3780 features
 Val:   8524 samples
 Class balance (train): 17.26% positive

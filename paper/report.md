@@ -6,9 +6,9 @@
 
 ## 1. Introduction
 
-Object detection is one of the core tasks in computer vision. Given an image, the goal is to locate objects of interest and output their positions as bounding boxes. Over the past decade, deep learning methods — particularly the YOLO family of detectors — have become the dominant approach for this task. However, classical methods based on hand-crafted features and traditional machine learning classifiers were the standard for many years before that, and in some settings they remain competitive.
+Object detection is one of the core tasks in computer vision. Given an image, the goal is to locate objects of interest and output their positions as bounding boxes. Over the past decade, deep learning methods - particularly the YOLO family of detectors - have become the dominant approach for this task. However, classical methods based on hand-crafted features and traditional machine learning classifiers were the standard for many years before that, and in some settings they remain competitive.
 
-This project compares a **classical detection pipeline** (HOG feature extraction + SVM classification) against a **modern deep learning detector** (YOLOv8n) on the task of **license plate detection**. The goal is not to prove that deep learning is better — that outcome is largely expected — but rather to investigate *how far* a classical approach can go, and to identify the specific conditions under which it succeeds or fails compared to a learned detector.
+This project compares a **classical detection pipeline** (HOG feature extraction + SVM classification) against a **modern deep learning detector** (YOLOv8n) on the task of **license plate detection**. The goal is not to prove that deep learning is better - that outcome is largely expected - but rather to investigate *how far* a classical approach can go, and to identify the specific conditions under which it succeeds or fails compared to a learned detector.
 
 License plate detection was chosen as the domain because it sits in a useful middle ground: plates have strong edges, rectangular structure, and fairly consistent visual properties, which gives classical methods a real chance. At the same time, real-world images introduce challenges like motion blur, viewpoint variation, small targets, and cluttered backgrounds, where deep learning is expected to have an advantage.
 
@@ -38,7 +38,7 @@ where all coordinates are normalized to [0, 1] relative to image dimensions. The
 
 The images vary in resolution and capture conditions. They include a mix of front and rear vehicle views, different lighting conditions, and various plate sizes relative to the image.
 
-Source: [Kaggle — License Plate Detection Dataset (10,125 Images)](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images)
+Source: [Kaggle - License Plate Detection Dataset (10,125 Images)](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images)
 
 ---
 
@@ -92,7 +92,7 @@ The output is a set of bounding boxes with confidence scores.
 
 *[To be completed after YOLO training]*
 
-YOLOv8n (nano) is the smallest variant of the YOLOv8 architecture. Unlike the classical pipeline, YOLO performs detection in a single forward pass through a neural network — it learns both feature extraction and bounding box prediction end-to-end during training.
+YOLOv8n (nano) is the smallest variant of the YOLOv8 architecture. Unlike the classical pipeline, YOLO performs detection in a single forward pass through a neural network - it learns both feature extraction and bounding box prediction end-to-end during training.
 
 We fine-tune a pretrained YOLOv8n model on our license plate dataset using the ultralytics library.
 
@@ -100,7 +100,7 @@ We fine-tune a pretrained YOLOv8n model on our license plate dataset using the u
 
 ## 4. Results
 
-### 4.1 Classical Pipeline — Crop Classification
+### 4.1 Classical Pipeline - Crop Classification
 
 Before evaluating the full detection pipeline, we first assess how well the SVM classifies individual image crops (plate vs background). This measures the quality of the HOG + SVM combination in isolation.
 
@@ -123,17 +123,17 @@ These results show that the SVM achieves strong crop-level accuracy. It correctl
 
 However, it is important to note that these numbers reflect **classification of pre-cropped patches**, not full-image detection. In a real detection scenario, the sliding window generates thousands of candidate patches per image, and even a small false positive rate can produce many spurious detections.
 
-### 4.2 Classical Pipeline — Full-Image Detection
+### 4.2 Classical Pipeline - Full-Image Detection
 
 *[To be completed after running the sliding window detector on the test set]*
 
-### 4.3 Deep Learning Pipeline — YOLOv8n
+### 4.3 Deep Learning Pipeline - YOLOv8n
 
 *[To be completed after YOLO training and evaluation]*
 
 ### 4.4 Comparison
 
-*[To be completed — both pipelines evaluated on the same test set with the same IoU thresholds]*
+*[To be completed - both pipelines evaluated on the same test set with the same IoU thresholds]*
 
 ---
 
@@ -143,11 +143,11 @@ However, it is important to note that these numbers reflect **classification of 
 
 This section will examine specific examples where each method succeeds or fails, categorized by:
 
-- **Plate size** — small vs large plates relative to the image
-- **Viewing angle** — frontal vs angled views
-- **Image quality** — clear vs blurry or low-light images
-- **Background complexity** — simple vs cluttered scenes
-- **Occlusion** — fully visible vs partially occluded plates
+- **Plate size** - small vs large plates relative to the image
+- **Viewing angle** - frontal vs angled views
+- **Image quality** - clear vs blurry or low-light images
+- **Background complexity** - simple vs cluttered scenes
+- **Occlusion** - fully visible vs partially occluded plates
 
 The goal is to identify systematic patterns in failure modes rather than cherry-picking individual examples.
 

@@ -27,9 +27,9 @@ def match_predictions(pred_boxes, gt_boxes, iou_threshold=0.5):
         iou_threshold: minimum IoU for a match
 
     Returns:
-        tp_pairs: list of (pred_box, gt_box, iou) — matched
-        fp_boxes: list of pred_box — unmatched predictions
-        fn_boxes: list of gt_box — unmatched ground truths
+        tp_pairs: list of (pred_box, gt_box, iou) - matched
+        fp_boxes: list of pred_box - unmatched predictions
+        fn_boxes: list of gt_box - unmatched ground truths
     """
     # Sort preds by confidence descending
     preds_sorted = sorted(pred_boxes, key=lambda b: b[4], reverse=True)

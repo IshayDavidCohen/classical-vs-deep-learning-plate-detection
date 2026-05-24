@@ -5,7 +5,7 @@ Provides functions to evaluate a trained SVM model by classifying
 plate and background crops from test images, then generating
 visual grids of true positives, false negatives, and false positives.
 
-Functions are called from main.py — this module has no CLI entry point.
+Functions are called from main.py, this module has no CLI entry point.
 """
 
 import os

@@ -2,7 +2,7 @@
 
 A comparison of **HOG + SVM** (classical computer vision) against **YOLOv8n** (deep learning) for license plate detection.
 
-This is a CS machine learning final project. We don't read the plate text — we only detect **where the plate is** in the image.
+This is a CS machine learning final project. We don't read the plate text - we only detect **where the plate is** in the image.
 
 ## Research Question
 
@@ -15,14 +15,14 @@ This is a CS machine learning final project. We don't read the plate text — we
 | Precision | 0.9484 | 0.99 | 0.9919 |
 | Recall | 0.9606 | 0.98 | 0.9475 |
 | F1 | 0.9544 | 0.98 | ~0.969 |
-| mAP50 | — | — | 0.9741 |
+| mAP50 | - | - | 0.9741 |
 | Training time | ~13 min | ~5 hours | 76 min |
 
 **Note:** SVM metrics are crop-level classification. YOLO metrics are full-image detection with IoU matching. See the [report](paper/report.md) for a detailed comparison.
 
 ## Dataset
 
-[License Plate Detection Dataset](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images) — 10,125 annotated images with YOLO-format bounding box labels.
+[License Plate Detection Dataset](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images) - 10,125 annotated images with YOLO-format bounding box labels.
 
 | Split | Images |
 | --- | --- |
@@ -71,12 +71,12 @@ python main.py help
 Available commands:
 
   prepare-data         Extract HOG features from training images
-  train-svm-linear     Train SVM — linear kernel only
-  train-svm-full       Train SVM — full grid (linear + RBF)
+  train-svm-linear     Train SVM - linear kernel only
+  train-svm-full       Train SVM - full grid (linear + RBF)
   train-yolo           Train YOLOv8n detector
-  eval-svm-linear      Qualitative analysis — SVM linear
-  eval-svm-full        Qualitative analysis — SVM full (best)
-  eval-yolo            Qualitative analysis — YOLO
+  eval-svm-linear      Qualitative analysis - SVM linear
+  eval-svm-full        Qualitative analysis - SVM full (best)
+  eval-yolo            Qualitative analysis - YOLO
   eval-all             Run all three qualitative analyses
 ```
 
@@ -86,10 +86,10 @@ Available commands:
 # 1. Extract HOG features (positive plates + negative background crops)
 python main.py prepare-data
 
-# 2. Train SVM (linear only — fast, ~13 min)
+# 2. Train SVM (linear only - fast, ~13 min)
 python main.py train-svm-linear
 
-# 3. Train SVM (full grid search — linear + RBF, ~5 hours)
+# 3. Train SVM (full grid search - linear + RBF, ~5 hours)
 python main.py train-svm-full
 
 # 4. Train YOLOv8n (~76 min on RTX 5070 Ti)
@@ -118,9 +118,9 @@ Each evaluation generates a markdown report with visual grids (TP/FN/FP) in `out
 image → candidate windows → HOG features → SVM score → NMS → bounding boxes
 ```
 
-1. **Training data preparation** — for each training image, crop the plate region (positive) and sample random background patches (negative). Extract HOG features from each crop.
-2. **SVM training** — train a binary classifier (plate vs background) on the HOG feature vectors using grid search over kernel and regularization parameters.
-3. **Detection** — at inference, slide windows across the image at multiple scales, extract HOG from each window, score with SVM, and apply non-maximum suppression.
+1. **Training data preparation** - for each training image, crop the plate region (positive) and sample random background patches (negative). Extract HOG features from each crop.
+2. **SVM training** - train a binary classifier (plate vs background) on the HOG feature vectors using grid search over kernel and regularization parameters.
+3. **Detection** - at inference, slide windows across the image at multiple scales, extract HOG from each window, score with SVM, and apply non-maximum suppression.
 
 HOG parameters: 64×128 target size, 9 orientations, 8×8 pixels per cell, 2×2 cells per block → 3,780-dimensional feature vector.
 
@@ -135,7 +135,7 @@ Fine-tune a pretrained YOLOv8n (nano) on the same dataset. YOLO handles feature 
 ## Project Structure
 
 ```
-├── main.py                              # CLI entry point — runs everything
+├── main.py                              # CLI entry point - runs everything
 ├── paper/
 │   └── report.md                        # Project report
 ├── src/
@@ -162,9 +162,9 @@ Fine-tune a pretrained YOLOv8n (nano) on the same dataset. YOLO handles feature 
 
 ## Key Findings
 
-**The classical pipeline performs surprisingly well on crop classification.** The RBF SVM achieves 98% F1 on classifying pre-cropped patches — comparable to YOLOv8n's precision and recall on full-image detection.
+**The classical pipeline performs surprisingly well on crop classification.** The RBF SVM achieves 98% F1 on classifying pre-cropped patches - comparable to YOLOv8n's precision and recall on full-image detection.
 
-**The real gap appears in full-image detection.** YOLO handles multi-scale detection, localization, and classification in a single pass. The classical pipeline requires sliding windows, manual scale selection, and NMS — each introducing potential failure points.
+**The real gap appears in full-image detection.** YOLO handles multi-scale detection, localization, and classification in a single pass. The classical pipeline requires sliding windows, manual scale selection, and NMS - each introducing potential failure points.
 
 **Failure patterns differ between approaches:**
 - **SVM fails on:** severely blurry crops, unusual plate formats (e.g. Dubai plates), extreme rotation, and text-like background objects (signs, banners)

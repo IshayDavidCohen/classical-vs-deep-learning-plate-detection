@@ -15,8 +15,8 @@ Usage:
         --neg-per-image 5
 
 This produces:
-    data/features/X_train.npy   — shape (n_samples, 3780)
-    data/features/y_train.npy   — shape (n_samples,)  values 0 or 1
+    data/features/X_train.npy   - shape (n_samples, 3780)
+    data/features/y_train.npy   - shape (n_samples,)  values 0 or 1
 """
 
 import os

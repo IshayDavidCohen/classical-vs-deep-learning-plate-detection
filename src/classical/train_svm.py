@@ -17,10 +17,10 @@ PYTHONPATH=. python3 -m src.classical.train_svm \
     --grid-search
 
 Expects your teammate to have saved features like:
-    data/features/X_train.npy   — shape (n_samples, n_features)
-    data/features/y_train.npy   — shape (n_samples,)
-    data/features/X_val.npy     — (optional, for evaluation)
-    data/features/y_val.npy     — (optional)
+    data/features/X_train.npy   - shape (n_samples, n_features)
+    data/features/y_train.npy   - shape (n_samples,)
+    data/features/X_val.npy     - (optional, for evaluation)
+    data/features/y_val.npy     - (optional)
 
 If val files don't exist, a random split is made from the training data.
 """
@@ -72,7 +72,7 @@ def generate_report(
     cm = metrics["confusion_matrix"]
     disp = ConfusionMatrixDisplay(cm, display_labels=["background", "plate"])
     disp.plot(cmap="Blues")
-    plt.title("SVM Validation — Confusion Matrix")
+    plt.title("SVM Validation - Confusion Matrix")
     plt.tight_layout()
     plt.savefig(out / "confusion_matrix.png", dpi=150)
     plt.close()

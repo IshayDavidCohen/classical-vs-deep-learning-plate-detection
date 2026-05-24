@@ -1,5 +1,5 @@
 Loading features from data/features ...
-No validation set found — splitting 20% from training data.
+No validation set found - splitting 20% from training data.
 Train: 34093 samples, 3780 features
 Val:   8524 samples
 Class balance (train): 17.26% positive

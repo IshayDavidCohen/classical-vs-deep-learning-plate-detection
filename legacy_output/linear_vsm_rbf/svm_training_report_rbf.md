@@ -1,4 +1,4 @@
-# SVM Training Report (RBF Kernel — Server Run)
+# SVM Training Report (RBF Kernel - Server Run)
 
 > Generated on 2026-05-23 (Prometheus server)
 
@@ -56,6 +56,17 @@
 | Val Recall | 0.9606 | **0.98** |
 | Val F1 | 0.9544 | **0.98** |
 | Training time (approx) | ~13 min/fold | ~80 min/fold |
+
+
+## Confusion Matrix
+![Confusion Matrix](confusion_matrix.png)
+
+
+| | Predicted Background | Predicted Plate |
+| --- | --- | --- |
+| **Actual Background** | 7,035 (TN) | 17 (FP) |
+| **Actual Plate** | 36 (FN) | 1,436 (TP) |
+
 
 ## Notes
 
