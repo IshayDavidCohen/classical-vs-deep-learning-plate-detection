@@ -2,6 +2,33 @@
 
 > Classical (HOG + SVM) vs Deep Learning (YOLOv8n) for License Plate Detection
 
+---
+
+## Introduction
+
+**Authors:** Ishay Cohen, Mikhael Pelagein
+
+**Dataset:** [License Plate Detection Dataset](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images) - 10,125 annotated images from Kaggle
+
+**Task:** License plate localization - given an image, find where the plate is. No OCR, no character reading - detection only.
+
+**Research question:** How far can a classical computer vision pipeline go compared to modern deep learning, and under what conditions does each approach succeed or fail?
+
+**Approach:** We implemented and compared two detection pipelines on the same dataset:
+- **Classical** - HOG feature extraction + SVM classification + sliding window detection
+- **Deep Learning** - YOLOv8n fine-tuned end-to-end
+
+**Repository:** [GitHub](https://github.com/<your-repo>/classical-vs-deep-learning-plate-detection)
+
+**AI Disclosure:** Claude (Anthropic) was used for code assistance: debugging, and Manim visualizations. All architectural decisions, analysis, and conclusions are our own.
+
+**About this project:** This project compares two fundamentally different approaches to the same problem. The classical pipeline breaks detection into manual stages: extract gradient features with HOG, classify patches with SVM, scan the image with a sliding window, and merge overlapping detections with NMS.
+Each stage is designed by hand and tuned independently. The deep learning pipeline replaces all of this with a single neural network that learns feature extraction, localization, and classification jointly from data.
+**We trained both pipelines on the same dataset**, evaluated them on the same test images, and ran two apples-to-apples comparisons: one at the crop level (where SVM operates natively) and one at the full-image level (where YOLO operates natively). The results reveal that each approach has a domain where it excels - and a domain where it collapses.
+
+---
+
+# Background and Terminology
 
 ***Histogram of Oriented Gradients (HOG):*** A computer vision feature descriptor used to recognize shapes and objects in images. It breaks an image down into small connected regions called cells. For the pixels within each cell, it calculates the direction and intensity of the sharpest changes in brightness (the gradients) to map out the object's structural appearance. The algorithm then outputs this shape information as a structured feature vector (array).
 
@@ -10,10 +37,6 @@
 ***You Only Look Once (YOLO):*** A real-time object detection algorithm (neural network) that identifies and locates multiple objects in an image in a single pass. It works by dividing the image into a grid and simultaneously predicting bounding boxes and category probabilities for each section.
 
 ![HOG Feature Map Example](./images/HOG_feature_map_example.png)
-
----
-
-# Background and Terminology
 
 ## Feature Extraction & Classical ML:
 
