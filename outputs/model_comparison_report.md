@@ -85,11 +85,11 @@ YOLO struggles in this setting with 57 false positives and 32 misses. This makes
 
 **SVM correct, YOLO wrong (84 cases):** The majority are tiny, heavily pixelated plate crops where YOLO sees nothing recognizable, but SVM's HOG features still pick up enough gradient structure to classify correctly. A few are background patches that YOLO falsely detected as plates - rectangular objects with plate-like aspect ratios that confused YOLO's learned features.
 
-![SVM correct, YOLO wrong](outputs/crops_comparison/svm_wins.png)
+![SVM correct, YOLO wrong](./crops_comparison/svm_wins.png)
 
 **YOLO correct, SVM wrong (6 cases):** These include unusual plate formats (Dubai plate with Arabic text, Illinois plate with decorative elements), a heavily rotated plate (MH591), and severely degraded crops. In each case, the HOG gradient pattern didn't match what the SVM learned during training, but YOLO's deeper feature representations handled the variation.
 
-![YOLO correct, SVM wrong](outputs/crops_comparison/yolo_wins.png)
+![YOLO correct, SVM wrong](./crops_comparison/yolo_wins.png)
 
 ---
 
@@ -150,11 +150,11 @@ The images below show YOLO's detections on test images where the SVM sliding win
 
 **YOLO detected, SVM missed** - in every case, YOLO confidently localized the plate while the sliding window failed to produce a matching detection:
 
-![YOLO detected, SVM missed](outputs/detection_comparison/yolo_wins.png)
+![YOLO detected, SVM missed](./detection_comparison/yolo_wins.png)
 
 **Both models missed** - these represent the hardest cases in the dataset, typically dense multi-plate scenes or damaged/obscured plates where neither approach succeeded:
 
-![Both models missed](outputs/detection_comparison/both_missed.png)
+![Both models missed](./detection_comparison/both_missed.png)
 
 ---
 
@@ -170,16 +170,16 @@ From qualitative analysis on 200 test images:
 - The Dubai plate (unusual format with Arabic text) failed because the training set predominantly contains Western-style plates
 - The 2 false positives were a "LAND OF LINCOLN" banner (rectangular, text-heavy, strong edges) and a fence/tree scene that barely crossed the threshold
 
-![SVM Linear - False Negatives](outputs/qualitative_linear/false_negatives.png)
+![SVM Linear - False Negatives](./qualitative_linear/false_negatives.png)
 
-![SVM Linear - False Positives](outputs/qualitative_linear/false_positives.png)
+![SVM Linear - False Positives](./qualitative_linear/false_positives.png)
 
 **RBF SVM** - 9 false negatives, 1 false positive:
 - Reduced misses from 16 to 9 by catching borderline cases the linear kernel missed
 - The remaining 9 misses were almost entirely degraded/pixelated crops where no classifier could reasonably succeed
 - Only 1 false positive (down from 2)
 
-![SVM RBF - False Negatives](outputs/qualitative_full/false_negatives.png)
+![SVM RBF - False Negatives](./qualitative_full/false_negatives.png)
 
 ### YOLO Failure Modes (Full Image)
 
@@ -189,9 +189,9 @@ From qualitative analysis on 200 test images (17 FN, 6 FP):
 - 6 false positives were mostly in the same complex scenes - YOLO detected real plates that either weren't annotated or fell just below IoU threshold
 - In normal single-plate images, YOLO had near-zero errors
 
-![YOLO - False Negatives](outputs/qualitative_yolo/yolo_false_negatives.png)
+![YOLO - False Negatives](./qualitative_yolo/yolo_false_negatives.png)
 
-![YOLO - False Positives](outputs/qualitative_yolo/yolo_false_positives.png)
+![YOLO - False Positives](./qualitative_yolo/yolo_false_positives.png)
 
 ### Shared Failure Cases
 
