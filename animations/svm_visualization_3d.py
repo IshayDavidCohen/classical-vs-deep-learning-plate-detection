@@ -17,7 +17,7 @@ from manim import *
 FEATURES_PATH = "../data/features/X_train.npy"
 LABELS_PATH = "../data/features/y_train.npy"
 
-MAX_SAMPLES = 50
+MAX_SAMPLES = 500
 GRID_RES = 30
 
 
@@ -252,10 +252,10 @@ class SVMComparison3D(ThreeDScene):
             Text("RBF: flexible surface — wraps around the plate cluster", font_size=20),
             Text("Linear F1=0.954  |  RBF F1=0.984", font_size=18, color=GRAY),
         ).arrange(DOWN, buff=0.15).to_edge(DOWN, buff=0.4)
-        self.add_fixed_in_frame_mobjects(insight)
 
         bg_rect = BackgroundRectangle(insight, color=BLACK, fill_opacity=0.85, buff=0.15)
         self.add_fixed_in_frame_mobjects(bg_rect)
+        self.add_fixed_in_frame_mobjects(insight)
 
         self.play(FadeIn(bg_rect), Write(insight), run_time=2)
         self.wait(2)
