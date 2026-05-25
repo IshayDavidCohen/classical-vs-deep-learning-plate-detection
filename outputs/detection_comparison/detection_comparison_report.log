@@ -12,7 +12,7 @@ Running detection on 200 test images ...
   Processed 200/200 | SVM: 46.65s/img | YOLO: 0.013s/img
 
 =================================================================
-FULL-IMAGE DETECTION COMPARISON — 200 images @ IoU=0.5
+FULL-IMAGE DETECTION COMPARISON - 200 images @ IoU=0.5
 =================================================================
 Metric                      SVM (sliding window)      YOLOv8n
 ------------------------- ---------------------- ------------

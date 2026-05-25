@@ -26,7 +26,7 @@ from manim import *
 
 
 # ======================================================================
-# Configuration — adjust paths if needed
+# Configuration - adjust paths if needed
 # ======================================================================
 
 FEATURES_PATH = "../data/features/X_train.npy"
@@ -351,7 +351,7 @@ class ResultsReveal(Scene):
             Text("It's specialized", font_size=30, color=YELLOW),
             Text("", font_size=10),
             Text("The SVM classifies crops better than YOLO.", font_size=22),
-            Text("But detection requires localization —", font_size=22),
+            Text("But detection requires localization -", font_size=22),
             Text("and that's where end-to-end learning wins.", font_size=22),
         ).arrange(DOWN, buff=0.15).center()
 

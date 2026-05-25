@@ -1,0 +1,16 @@
+path: ./data/raw
+
+# Paths to the specific image folders
+train: train
+val: valid
+test: test
+
+nc: 1
+names: ['license_plate']
+
+roboflow:
+  workspace: roboflow-universe-projects
+  project: license-plate-recognition-rxg4e
+  version: 11
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/roboflow-universe-projects/license-plate-recognition-rxg4e/dataset/11
