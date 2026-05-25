@@ -67,7 +67,7 @@ def sample_negative_crops(
     while len(negatives) < num_negatives and attempts < max_attempts:
         attempts += 1
 
-        # Random width/height — vary size and aspect ratio
+        # Random width/height - vary size and aspect ratio
         crop_w = random.randint(min_crop_size, max(min_crop_size + 1, img_w // 3))
         crop_h = random.randint(min_crop_size, max(min_crop_size + 1, img_h // 3))
 

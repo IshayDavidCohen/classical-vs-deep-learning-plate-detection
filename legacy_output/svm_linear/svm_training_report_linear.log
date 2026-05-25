@@ -1,0 +1,60 @@
+C:\Users\Ishay\miniconda3\python.exe C:/Users/Ishay/AppData/Local/Programs/PyCharm/plugins/python-ce/helpers/pydev/pydevd.py --multiprocess --qt-support=auto --client 127.0.0.1 --port 57615 --file G:\coding\repos\classical-vs-deep-learning-plate-detection\src\classical\train_svm.py --data-dir G:/coding/repos/classical-vs-deep-learning-plate-detection/data/features --model-path models/svm_plate.joblib --output-dir ../../output --grid-search
+Connected to: <socket.socket fd=944, family=2, type=1, proto=0, laddr=('127.0.0.1', 57616), raddr=('127.0.0.1', 57615)>.
+Connected to pydev debugger (build 253.28294.336)
+Loading features from G:/coding/repos/classical-vs-deep-learning-plate-detection/data/features ...
+No validation set found - splitting 20% from training data.
+Train: 34093 samples, 3780 features
+Val:   8524 samples
+Class balance (train): 17.26% positive
+
+Running grid search ...
+Fitting 3 folds for each of 3 candidates, totalling 9 fits
+Connected to: <socket.socket fd=828, family=2, type=1, proto=0, laddr=('127.0.0.1', 57619), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=904, family=2, type=1, proto=0, laddr=('127.0.0.1', 57620), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=324, family=2, type=1, proto=0, laddr=('127.0.0.1', 57621), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=940, family=2, type=1, proto=0, laddr=('127.0.0.1', 57622), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=744, family=2, type=1, proto=0, laddr=('127.0.0.1', 57623), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=864, family=2, type=1, proto=0, laddr=('127.0.0.1', 57624), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=916, family=2, type=1, proto=0, laddr=('127.0.0.1', 57625), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=984, family=2, type=1, proto=0, laddr=('127.0.0.1', 57626), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=864, family=2, type=1, proto=0, laddr=('127.0.0.1', 57627), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=620, family=2, type=1, proto=0, laddr=('127.0.0.1', 57628), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=852, family=2, type=1, proto=0, laddr=('127.0.0.1', 57629), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=764, family=2, type=1, proto=0, laddr=('127.0.0.1', 57630), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=804, family=2, type=1, proto=0, laddr=('127.0.0.1', 57631), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=824, family=2, type=1, proto=0, laddr=('127.0.0.1', 57632), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=760, family=2, type=1, proto=0, laddr=('127.0.0.1', 57633), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=864, family=2, type=1, proto=0, laddr=('127.0.0.1', 57634), raddr=('127.0.0.1', 57615)>.
+Connected to: <socket.socket fd=640, family=2, type=1, proto=0, laddr=('127.0.0.1', 57635), raddr=('127.0.0.1', 57615)>.
+Exception ignored in: <_io.BytesIO object at 0x000001E8B17437E0>
+Traceback (most recent call last):
+  File "C:\Users\Ishay\AppData\Local\Programs\PyCharm\plugins\python-ce\helpers\pydev\_pydevd_bundle\pydevd_pep_669_tracing.py", line 353, in _get_top_level_frame
+    while f_unhandled:
+BufferError: Existing exports of data: object cannot be re-sized
+[CV 1/3] END ......svm__C=1, svm__kernel=linear;, score=0.953 total time=12.2min
+[CV 1/3] END ....svm__C=0.1, svm__kernel=linear;, score=0.953 total time=12.3min
+[CV 1/3] END .....svm__C=10, svm__kernel=linear;, score=0.953 total time=12.4min
+[CV 2/3] END ......svm__C=1, svm__kernel=linear;, score=0.962 total time=13.2min
+[CV 2/3] END .....svm__C=10, svm__kernel=linear;, score=0.962 total time=13.2min
+[CV 2/3] END ....svm__C=0.1, svm__kernel=linear;, score=0.962 total time=13.3min
+[CV 3/3] END ......svm__C=1, svm__kernel=linear;, score=0.952 total time=13.3min
+[CV 3/3] END .....svm__C=10, svm__kernel=linear;, score=0.952 total time=13.3min
+[CV 3/3] END ....svm__C=0.1, svm__kernel=linear;, score=0.952 total time=13.3min
+Best params: {'svm__C': 0.1, 'svm__kernel': 'linear'}
+Best CV F1:  0.9556
+
+--- Validation results ---
+              precision    recall  f1-score   support
+
+  background       0.99      0.99      0.99      7052
+       plate       0.95      0.96      0.95      1472
+
+    accuracy                           0.98      8524
+   macro avg       0.97      0.97      0.97      8524
+weighted avg       0.98      0.98      0.98      8524
+
+
+Model saved to models/svm_plate.joblib
+
+Report saved to:           ..\..\output\svm_training_report.md
+Confusion matrix saved to: ..\..\output\confusion_matrix.png

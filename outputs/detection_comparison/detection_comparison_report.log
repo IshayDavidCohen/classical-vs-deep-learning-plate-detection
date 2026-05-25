@@ -1,0 +1,34 @@
+Connected to pydev debugger (build 253.28294.336)
+Loading SVM RBF model ...
+Loading YOLO model ...
+Running detection on 200 test images ...
+  Processed 25/200 | SVM: 40.80s/img | YOLO: 0.028s/img
+  Processed 50/200 | SVM: 120.00s/img | YOLO: 0.012s/img
+  Processed 75/200 | SVM: 16.94s/img | YOLO: 0.009s/img
+  Processed 100/200 | SVM: 234.49s/img | YOLO: 0.021s/img
+  Processed 125/200 | SVM: 323.15s/img | YOLO: 0.021s/img
+  Processed 150/200 | SVM: 274.45s/img | YOLO: 0.024s/img
+  Processed 175/200 | SVM: 90.30s/img | YOLO: 0.019s/img
+  Processed 200/200 | SVM: 46.65s/img | YOLO: 0.013s/img
+
+=================================================================
+FULL-IMAGE DETECTION COMPARISON — 200 images @ IoU=0.5
+=================================================================
+Metric                      SVM (sliding window)      YOLOv8n
+------------------------- ---------------------- ------------
+tp                                            82          205
+fp                                           170            6
+fn                                           140           17
+precision                                 0.3254       0.9716
+recall                                    0.3694       0.9234
+f1                                        0.3460       0.9469
+avg IoU (TP)                              0.6518       0.8566
+perfect images                                42          194
+avg time/image                          143.347s       0.018s
+speed ratio                                7788x           1x
+
+Generating visualizations ...
+  Saved: outputs\detection_comparison\yolo_wins.png
+  Saved: outputs\detection_comparison\both_missed.png
+
+Report saved to: outputs\detection_comparison\detection_comparison_report.md

@@ -1,0 +1,21 @@
+Collecting test crops ...
+Collected 1217 crops (222 plates, 995 background)
+
+Running SVM Linear on 1217 crops ...
+Running SVM RBF on 1217 crops ...
+Running YOLO on 1217 crops ...
+
+============================================================
+CROPS COMPARISON - 1217 identical crops
+============================================================
+Metric            SVM Linear      SVM RBF      YOLOv8n
+--------------- ------------ ------------ ------------
+tp                       206          213          190
+fn                        16            9           32
+fp                         9            2           57
+tn                       986          993          938
+precision             0.9581       0.9907       0.7692
+recall                0.9279       0.9595       0.8559
+f1                    0.9428       0.9748       0.8102
+
+Report saved to: outputs\crops_comparison\crops_comparison_report.md
