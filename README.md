@@ -18,7 +18,7 @@ This is a CS machine learning final project. We don't read the plate text - we o
 | mAP50 | - | - | 0.9741 |
 | Training time | ~13 min | ~5 hours | 76 min |
 
-**Note:** SVM metrics are crop-level classification. YOLO metrics are full-image detection with IoU matching. See the [report](paper/report.md) for a detailed comparison.
+**Note:** SVM metrics are crop-level classification. YOLO metrics are full-image detection with IoU matching. See the [report](./outputs/model_comparison_report.md) for a detailed comparison.
 
 ## Dataset
 

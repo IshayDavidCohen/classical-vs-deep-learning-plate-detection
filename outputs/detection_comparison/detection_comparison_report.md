@@ -76,7 +76,7 @@ Classical methods can match or beat deep learning when the problem is well-scope
 
 ### SVM detected, YOLO missed
 There were no cases where the sliding window found a plate that YOLO did not detect.
-In other words it is safe to safe, YOLOv8 nano, aced this test compared to the classical approach.
+In other words it is safe to say, YOLOv8 nano, aced this test compared to the classical approach.
 
 ### YOLO detected, SVM missed
 Cases where YOLO found a plate that the sliding window missed.

@@ -798,7 +798,6 @@ def eval_detection_comparison():
     # Visual examples
     svm_wins = []  # SVM found plate, YOLO missed
     yolo_wins = []  # YOLO found plate, SVM missed
-    both_found = []  # Both found it
     both_missed = []  # Both missed
 
     for i, img_name in enumerate(img_names):
@@ -861,7 +860,7 @@ def eval_detection_comparison():
         svm_missed_any = len(svm_fn) > 0
         yolo_missed_any = len(yolo_fn) > 0
 
-        if svm_found and yolo_missed_any and len(yolo_wins) < 9:
+        if svm_found and yolo_missed_any and len(svm_wins) < 9:
             # SVM detected something YOLO missed
             svm_gt = [gt for _, gt, _ in svm_tp_pairs]
             svm_pred = [p for p, _, _ in svm_tp_pairs]
@@ -869,7 +868,7 @@ def eval_detection_comparison():
                                       fn_boxes=list(svm_fn), fp_boxes=list(svm_fp))
             svm_wins.append((vis, f"{short_name}\nSVM: {len(svm_tp_pairs)}TP {len(svm_fn)}FN"))
 
-        if yolo_found and svm_missed_any and len(svm_wins) < 9:
+        if yolo_found and svm_missed_any and len(yolo_wins) < 9:
             # YOLO detected something SVM missed
             yolo_gt = [gt for _, gt, _ in yolo_tp_pairs]
             yolo_pred = [p for p, _, _ in yolo_tp_pairs]
