@@ -172,6 +172,13 @@ YOLOv8n was fine-tuned from pretrained COCO weights for 100 epochs. Training con
 
 Each image is accompanied by a YOLO-format label file. Each line has the format `class x_center y_center width height`, where all coordinates are normalized to [0, 1] relative to image dimensions. The class index is always 0 (license plate).
 
+
+### SVM Decision Boundries: Linear Plane vs RBF Surface
+
+The visualization below shows the same comparison in 3D. Our actual training data (34,093 HOG feature vectors) is projected from 3,780 dimensions down to 3 using PCA. Blue dots are plate samples, red dots are background. The green plane is the linear decision boundary flat, unable to curve. The yellow surface is the RBF boundary wrapping around the plate cluster to capture non-linear structure. The camera rotates to reveal depth that is hidden in the 2D projection.
+
+![3D Linear vs RBF](../outputs/GIF/SVM_3D_Linear_vs_RBF.gif)
+
 ---
 
 ## 2. Validation Results (Training Stage)
