@@ -574,26 +574,32 @@ def eval_crops_comparison():
     print(f"\nRunning SVM Linear on {len(crops)} crops ...")
     clf_linear = PlateClassification.load(Config.SVM_LINEAR)
     linear_preds = []
-    for crop_bgr, _, _ in crops:
+    for crop_bgr, _, img_name in crops:
         try:
             feat = extractor.compute_single(crop_bgr)
             pred, _ = clf_linear.predict(feat.reshape(1, -1))
             linear_preds.append(int(pred[0]))
-        except Exception:
-            linear_preds.append(0)
+        except Exception as e:
+            raise RuntimeError(
+                f"SVM Linear crop prediction failed for image '{img_name}' "
+                f"with crop shape {crop_bgr.shape}"
+            ) from e
     linear_preds = np.array(linear_preds)
 
     # --- Run SVM RBF ---
     print(f"Running SVM RBF on {len(crops)} crops ...")
     clf_rbf = PlateClassification.load(Config.SVM_FULL)
     rbf_preds = []
-    for crop_bgr, _, _ in crops:
+    for crop_bgr, _, img_name in crops:
         try:
             feat = extractor.compute_single(crop_bgr)
             pred, _ = clf_rbf.predict(feat.reshape(1, -1))
             rbf_preds.append(int(pred[0]))
-        except Exception:
-            rbf_preds.append(0)
+        except Exception as e:
+            raise RuntimeError(
+                f"SVM RBF crop prediction failed for image '{img_name}' "
+                f"with crop shape {crop_bgr.shape}"
+            ) from e
     rbf_preds = np.array(rbf_preds)
 
     # --- Run YOLO ---
