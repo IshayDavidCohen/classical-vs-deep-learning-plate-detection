@@ -1,0 +1,16 @@
+path: .
+
+# Paths to the specific image folders
+train: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\train
+val: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\valid
+test: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\test
+
+nc: 1
+names: ['license_plate']
+
+roboflow:
+  workspace: roboflow-universe-projects
+  project: license-plate-recognition-rxg4e
+  version: 11
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/roboflow-universe-projects/license-plate-recognition-rxg4e/dataset/11
