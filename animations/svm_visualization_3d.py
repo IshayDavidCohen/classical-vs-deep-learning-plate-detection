@@ -248,8 +248,8 @@ class SVMComparison3D(ThreeDScene):
 
         # ---- Final insight ----
         insight = VGroup(
-            Text("Linear: flat plane — cannot follow curved boundaries", font_size=20),
-            Text("RBF: flexible surface — wraps around the plate cluster", font_size=20),
+            Text("Linear: flat plane - cannot follow curved boundaries", font_size=20),
+            Text("RBF: flexible surface - wraps around the plate cluster", font_size=20),
             Text("Linear F1=0.954  |  RBF F1=0.984", font_size=18, color=GRAY),
         ).arrange(DOWN, buff=0.15).to_edge(DOWN, buff=0.4)
 

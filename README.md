@@ -1,24 +1,19 @@
-# Classical vs Deep Learning for License Plate Detection
+# License Plate Detection: HOG+SVM vs YOLOv8n
 
-A comparison of **HOG + SVM** (classical computer vision) against **YOLOv8n** (deep learning) for license plate detection.
+A comparative study of classical (HOG + SVM) and deep learning (YOLOv8n) approaches for license plate detection.
 
-This is a CS machine learning final project. We don't read the plate text - we only detect **where the plate is** in the image.
+**Authors:** Ishay Cohen, Mikhael Pelagein
 
-## Research Question
-
-> How far can a classical detection pipeline go compared to a modern deep learning detector, and under what conditions does each approach succeed or fail?
+> How far can a classical detection pipeline go compared to modern deep learning, and under what conditions does each approach succeed or fail?
 
 ## Results at a Glance
 
-| Metric | HOG+SVM (Linear) | HOG+SVM (RBF) | YOLOv8n |
+| Setting | SVM RBF F1 | YOLO F1 | Winner |
 | --- | --- | --- | --- |
-| Precision | 0.9484 | 0.99 | 0.9919 |
-| Recall | 0.9606 | 0.98 | 0.9475 |
-| F1 | 0.9544 | 0.98 | ~0.969 |
-| mAP50 | - | - | 0.9741 |
-| Training time | ~13 min | ~5 hours | 76 min |
+| Crop classification | 0.9748 | 0.8102 | SVM |
+| Full-image detection | 0.3460 | 0.9469 | YOLO |
 
-**Note:** SVM metrics are crop-level classification. YOLO metrics are full-image detection with IoU matching. See the [report](./outputs/model_comparison_report.md) for a detailed comparison.
+Each model wins on its own turf. Full analysis in the [comparison report](paper/model_comparison_report.md).
 
 ## Dataset
 
@@ -30,17 +25,42 @@ This is a CS machine learning final project. We don't read the plate text - we o
 | Valid | ~2,048 |
 | Test | ~1,020 |
 
-Download the dataset and place it in `data/raw/` with `train/`, `valid/`, and `test/` subdirectories, each containing `images/` and `labels/`.
+Download and extract into `data/raw/`:
+
+```
+data/raw/
+├── train/
+│   ├── images/
+│   └── labels/
+├── valid/
+│   ├── images/
+│   └── labels/
+├── test/
+│   ├── images/
+│   └── labels/
+└── data.yaml
+```
 
 ## Setup
 
 ```bash
-# Clone
-git clone https://github.com/<your-repo>/classical-vs-deep-learning-plate-detection.git
+git clone https://github.com/IshayDavidCohen/classical-vs-deep-learning-plate-detection.git
 cd classical-vs-deep-learning-plate-detection
-
-# Install dependencies
 pip install -r requirements.txt
+```
+
+### Requirements
+
+```
+joblib==1.5.3
+numpy==2.4.6
+scikit-learn
+scikit-image
+opencv-python
+matplotlib
+ultralytics
+torch
+torchvision
 ```
 
 For GPU support (YOLO training):
@@ -48,16 +68,23 @@ For GPU support (YOLO training):
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 ```
 
-### Pre-trained Models
+For Manim visualizations (optional, not required as it was used only for the animations in the 5 minute video):
+```bash
+pip install manim
+```
 
-Download from the [v0.9-beta-trained-models](https://github.com/IshayDavidCohen/classical-vs-deep-learning-plate-detection/releases/tag/v-0.9-beta-trained-models) release and place in `models/`:
+### Pre-trained Models (Required)
+
+Download all assets from the [v1.0-trained-models](https://github.com/IshayDavidCohen/classical-vs-deep-learning-plate-detection/releases/tag/v1.0.0-trained-models) release and place in `models/`:
 
 ```
 models/
-├── svm_plate_linear.joblib
-├── svm_plate_rbf.joblib
-└── yolo_plate.pt
+├── svm_plate_linear.joblib    # HOG+SVM, linear kernel, C=0.1 (F1=0.9544)
+├── svm_plate_rbf.joblib       # HOG+SVM, RBF kernel, C=10 (F1=0.98)
+└── yolo_plate.pt              # YOLOv8n, 100 epochs (mAP50=0.9741)
 ```
+
+The release also includes precomputed HOG features (`X_train.npy`, `y_train.npy`) - place these in `data/features/` if you want to skip the feature extraction step (`prepare-data` function, i.e HOG phase).
 
 ## Usage
 
@@ -67,16 +94,23 @@ Everything runs from `main.py`:
 python main.py help
 ```
 
-```
-Available commands:
+### Available Commands
 
+```
+Data preparation:
   prepare-data         Extract HOG features from training images
-  train-svm-linear     Train SVM - linear kernel only
-  train-svm-full       Train SVM - full grid (linear + RBF)
-  train-yolo           Train YOLOv8n detector
+
+Training:
+  train-svm-linear     Train SVM - linear kernel only (~13 min CPU)
+  train-svm-full       Train SVM - full grid search, linear + RBF (~5 hours CPU)
+  train-yolo           Train YOLOv8n detector (~76 min GPU)
+
+Evaluation:
   eval-svm-linear      Qualitative analysis - SVM linear
   eval-svm-full        Qualitative analysis - SVM full (best)
   eval-yolo            Qualitative analysis - YOLO
+  eval-crops           Apples-to-apples crop comparison (all 3 models)
+  eval-detection       Full-image detection comparison (SVM sliding window vs YOLO)
   eval-all             Run all three qualitative analyses
 ```
 
@@ -86,94 +120,100 @@ Available commands:
 # 1. Extract HOG features (positive plates + negative background crops)
 python main.py prepare-data
 
-# 2. Train SVM (linear only - fast, ~13 min)
+# 2. Train SVM - linear only (fast iteration)
 python main.py train-svm-linear
 
-# 3. Train SVM (full grid search - linear + RBF, ~5 hours)
+# 3. Train SVM - full grid search (linear + RBF, finds best kernel)
 python main.py train-svm-full
 
-# 4. Train YOLOv8n (~76 min on RTX 5070 Ti)
+# 4. Train YOLOv8n (requires GPU)
 python main.py train-yolo
 ```
 
-### Evaluate existing models
+### Evaluate with pre-trained models
 
 ```bash
-# Run qualitative analysis on all three models
-python main.py eval-all
-
-# Or individually
+# Individual qualitative analyses (generates TP/FN/FP grids + reports)
 python main.py eval-svm-linear
 python main.py eval-svm-full
 python main.py eval-yolo
+
+# Apples-to-apples crop comparison (all 3 models on same 1,217 crops)
+python main.py eval-crops
+
+# Full-image detection comparison (SVM sliding window vs YOLO, can take up to 7-8 hours)
+python main.py eval-detection
+
+# Run all three qualitative analyses at once
+python main.py eval-all
 ```
 
-Each evaluation generates a markdown report with visual grids (TP/FN/FP) in `outputs/`.
+All evaluation outputs go to `outputs/` as markdown reports with embedded images.
 
 ## How It Works
 
-### Classical Pipeline: HOG + SVM
+### Classical Pipeline
 
 ```
-image → candidate windows → HOG features → SVM score → NMS → bounding boxes
+Image → Sliding Window → HOG Features → SVM Classification → NMS → Bounding Boxes
 ```
 
-1. **Training data preparation** - for each training image, crop the plate region (positive) and sample random background patches (negative). Extract HOG features from each crop.
-2. **SVM training** - train a binary classifier (plate vs background) on the HOG feature vectors using grid search over kernel and regularization parameters.
-3. **Detection** - at inference, slide windows across the image at multiple scales, extract HOG from each window, score with SVM, and apply non-maximum suppression.
+Each stage is hand-designed: HOG extracts a 3,780-dim gradient feature vector, SVM classifies it as plate or background, sliding window scans the image at 6 scales, and NMS merges overlapping detections.
 
-HOG parameters: 64×128 target size, 9 orientations, 8×8 pixels per cell, 2×2 cells per block → 3,780-dimensional feature vector.
-
-### Deep Learning Pipeline: YOLOv8n
+### Deep Learning Pipeline
 
 ```
-image → neural network → bounding boxes + confidence
+Image → YOLOv8n → Bounding Boxes + Confidence
 ```
 
-Fine-tune a pretrained YOLOv8n (nano) on the same dataset. YOLO handles feature extraction, classification, and localization in a single forward pass.
+A single neural network handles feature extraction, localization, and classification in one forward pass. Fine-tuned from pretrained COCO weights.
 
 ## Project Structure
 
 ```
-├── main.py                              # CLI entry point - runs everything
-├── paper/
-│   └── report.md                        # Project report
+├── main.py                              # CLI entry point - all commands
 ├── src/
 │   ├── classical/
 │   │   ├── hog_features.py              # HOG feature extraction
 │   │   ├── svm_classifier.py            # SVM wrapper (train, predict, save/load)
 │   │   ├── detector.py                  # Sliding window + NMS
-│   │   ├── train_svm.py                 # Training logic + report generation
+│   │   ├── train_svm.py                 # Training utilities + report generation
 │   │   └── training_data_preparation.py # Positive + negative crop sampling
 │   ├── deep/
-│   │   └── train_yolo.py                # YOLO training + report generation
+│   │   ├── train_yolo.py                # YOLO training config + report generation
+│   │   └── yolov8n.pt                   # Base YOLOv8n weights (pretrained COCO)
 │   ├── evaluation/
 │   │   ├── metrics.py                   # Classification + detection metrics
 │   │   ├── svm_qualitative_analysis.py  # Visual analysis of SVM predictions
 │   │   └── yolo_qualitative_analysis.py # Visual analysis of YOLO predictions
 │   └── common/
-│       └── utils.py                     # Shared utilities (YOLO label parsing, IoU, etc.)
-├── models/                              # Trained model files (.joblib, .pt)
-├── outputs/                             # Generated reports, plots, confusion matrices
-└── data/
-    ├── features/                        # HOG feature vectors (.npy)
-    └── raw/                             # Dataset (train/valid/test splits)
+│       └── utils.py                     # YOLO label parsing, IoU, crop sampling
+├── models/                              # Trained models (download from release)
+├── outputs/                             # Generated reports, plots, comparisons
+│   ├── model_comparison_report.md       # Full comparison report with all findings
+│   ├── crops_comparison/                # Crop-level comparison results
+│   ├── detection_comparison/            # Full-image detection comparison results
+│   ├── qualitative_linear/              # SVM linear qualitative analysis
+│   ├── qualitative_full/               # SVM RBF qualitative analysis
+│   └── qualitative_yolo/               # YOLO qualitative analysis
+├── animations/                          # Manim visualization scripts
+│   ├── svm_visualization.py             # 2D: Linear vs RBF decision boundaries
+│   └── svm_visualization_3d.py          # 3D: rotating PCA projection
+├── data/                                # Dataset (not in repo, download from Kaggle)
+├── legacy_output/                       # Original training outputs and logs
+└── requirements.txt
 ```
 
 ## Key Findings
 
-**The classical pipeline performs surprisingly well on crop classification.** The RBF SVM achieves 98% F1 on classifying pre-cropped patches - comparable to YOLOv8n's precision and recall on full-image detection.
-
-**The real gap appears in full-image detection.** YOLO handles multi-scale detection, localization, and classification in a single pass. The classical pipeline requires sliding windows, manual scale selection, and NMS - each introducing potential failure points.
-
-**Failure patterns differ between approaches:**
-- **SVM fails on:** severely blurry crops, unusual plate formats (e.g. Dubai plates), extreme rotation, and text-like background objects (signs, banners)
-- **YOLO fails on:** extremely dense multi-plate scenes (traffic jams with 20+ tiny plates) and unannotated plates in the ground truth
-
-**Practical tradeoff:** Linear SVM trains in 13 minutes on CPU. RBF takes 5 hours for a 2.5% F1 improvement. YOLO takes 76 minutes on GPU but delivers end-to-end detection without feature engineering.
+Classical ML is not obsolete - it is specialized. The SVM classifies pre-cropped patches better than YOLO (97.5% vs 81% F1). But real-world detection requires localization, and that's where the sliding window collapses (34.6% F1) while YOLO thrives (94.7% F1, 7,788x faster, zero cases where SVM found a plate YOLO missed).
 
 ## References
 
 - Dalal, N. and Triggs, B. (2005). *Histograms of Oriented Gradients for Human Detection*. CVPR.
 - Jocher, G. et al. (2023). *Ultralytics YOLOv8*. https://github.com/ultralytics/ultralytics
 - [License Plate Detection Dataset (Kaggle)](https://www.kaggle.com/datasets/barkataliarbab/license-plate-detection-dataset-10125-images)
+
+## AI Disclosure
+
+Claude (Anthropic) was used for code assistance, debugging, and Manim visualizations. All architectural decisions, analysis, and conclusions are our own.

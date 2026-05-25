@@ -735,7 +735,7 @@ def eval_crops_comparison():
         "",
         "### YOLO correct, SVM wrong",
         "These crops were classified correctly by YOLO but misclassified by SVM.",
-        "Look for cases where HOG features couldn't capture the relevant pattern —",
+        "Look for cases where HOG features couldn't capture the relevant pattern -",
         "unusual plate formats, heavy blur, or textures that confuse gradient histograms.",
         "",
         "![YOLO wins](yolo_wins.png)",
@@ -903,7 +903,7 @@ def eval_detection_comparison():
 
     # --- Print ---
     print(f"\n{'=' * 65}")
-    print(f"FULL-IMAGE DETECTION COMPARISON — {total_images} images @ IoU={iou_threshold}")
+    print(f"FULL-IMAGE DETECTION COMPARISON - {total_images} images @ IoU={iou_threshold}")
     print(f"{'=' * 65}")
     print(f"{'Metric':<25} {'SVM (sliding window)':>22} {'YOLOv8n':>12}")
     print(f"{'-' * 25} {'-' * 22} {'-' * 12}")
@@ -983,7 +983,7 @@ def eval_detection_comparison():
         "",
         "## Interpretation",
         "",
-        "This is the definitive comparison — both models performing their intended task",
+        "This is the definitive comparison - both models performing their intended task",
         "on the same images. The SVM must scan the image with a sliding window at multiple",
         "scales, extract HOG features from each window, classify, and merge overlapping",
         "detections. YOLO processes the entire image in a single forward pass.",
@@ -991,7 +991,7 @@ def eval_detection_comparison():
         "The gap here reflects the full cost of hand-crafted features vs learned features.",
         "The sliding window must guess where to look and at what scale; YOLO learns this",
         "from data. Any scale mismatch, stride too coarse, or threshold too aggressive",
-        "directly hurts SVM detection performance — problems YOLO doesn't have.",
+        "directly hurts SVM detection performance - problems YOLO doesn't have.",
         "",
         "## Visual Examples",
         "",

@@ -1,9 +1,9 @@
-path: .
+path: ./data/raw
 
 # Paths to the specific image folders
-train: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\train
-val: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\valid
-test: [LECTURER-PUT-YOUR-PATH-HERE]\classical-vs-deep-learning-plate-detection\data\raw\test
+train: train
+val: valid
+test: test
 
 nc: 1
 names: ['license_plate']
